@@ -48,7 +48,7 @@ export const MainView = () => {
   if (selectedMovie) {
     return (
       <MovieView
-        movie={selecteMovie}
+        movie={selectedMovie}
         onBackClick={() => setSelectedMovie(null)}
       />
     );
