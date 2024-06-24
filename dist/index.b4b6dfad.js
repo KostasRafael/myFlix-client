@@ -27250,50 +27250,31 @@ var _movieView = require("../movie-view/movie-view");
 var _s = $RefreshSig$();
 const MainView = ()=>{
     _s();
-    const [movies, setMovies] = (0, _react.useState)([
-        {
-            id: 1,
-            Title: "The lakehouse",
-            Description: "A lonely doctor who once occupied an unusual lakeside house begins to exchange love letters with its former resident, a frustrated architect. They must try to unravel the mystery behind their extraordinary romance before it's too late",
-            Genre: "Romance",
-            Director: "Alejandro Agresti"
-        },
-        {
-            id: 2,
-            Title: "Un Mundo Menos Peor",
-            Description: "A woman reunites with her husband, who vanished from her life years ago.",
-            Genre: "Drama",
-            Director: "Alejandro Agresti"
-        },
-        {
-            id: 3,
-            Title: "Awakenings",
-            Description: "The victims of an encephalitis epidemic many years ago have been catatonic ever since, but now a new drug offers the prospect of reviving them.",
-            Genre: "Drama",
-            Director: "Carole Penny Marshall"
-        },
-        {
-            id: 4,
-            Title: "Ford v Ferrari",
-            Description: "American car designer Carroll Shelby and driver Ken Miles battle corporate interference and the laws of physics to build a revolutionary race car for Ford in order to defeat Ferrari at the 24 Hours of Le Mans in 1966.",
-            Genre: "Action",
-            Director: "James Mangold"
-        }
-    ]);
+    const [movies, setMovies] = (0, _react.useState)([]);
+    (0, _react.useEffect)(()=>{
+        fetch("https://murmuring-ridge-94608-7a62e12e52db.herokuapp.com/movies").then((response)=>response.json()).then((movies)=>{
+            const moviesFromApi = movies.map((movie)=>{
+                return {
+                    Title: movie.Title
+                };
+            });
+            setMovies(moviesFromApi);
+        });
+    }, []);
     const [selectedMovie, setSelectedMovie] = (0, _react.useState)(null);
     if (selectedMovie) return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _movieView.MovieView), {
         movie: selectedMovie,
         onBackClick: ()=>setSelectedMovie(null)
     }, void 0, false, {
         fileName: "src/components/main-view/main-view.jsx",
-        lineNumber: 50,
+        lineNumber: 28,
         columnNumber: 7
     }, undefined);
     if (movies.length === 0) return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         children: "The list is empty!"
     }, void 0, false, {
         fileName: "src/components/main-view/main-view.jsx",
-        lineNumber: 58,
+        lineNumber: 36,
         columnNumber: 12
     }, undefined);
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
@@ -27304,16 +27285,16 @@ const MainView = ()=>{
                 }
             }, movie.id, false, {
                 fileName: "src/components/main-view/main-view.jsx",
-                lineNumber: 64,
+                lineNumber: 42,
                 columnNumber: 9
             }, undefined))
     }, void 0, false, {
         fileName: "src/components/main-view/main-view.jsx",
-        lineNumber: 62,
+        lineNumber: 40,
         columnNumber: 5
     }, undefined);
 };
-_s(MainView, "Sroj420NFdK744K/fTsNwPEv4/0=");
+_s(MainView, "llzgrUkvR/+OoCNfiqlA1H2LLFI=");
 _c = MainView;
 exports.default = MainView;
 var _c;
