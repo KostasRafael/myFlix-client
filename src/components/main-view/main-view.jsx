@@ -1,3 +1,5 @@
+//import useState
+
 import { useState, useEffect } from "react";
 
 import { MovieCard } from "../movie-card/movie-card";
@@ -10,10 +12,15 @@ const MainView = () => {
   useEffect(() => {
     fetch("https://murmuring-ridge-94608-7a62e12e52db.herokuapp.com/movies")
       .then((response) => response.json())
-      .then((movies) => {
-        const moviesFromApi = movies.map((movie) => {
+      .then((APImovies) => {
+        const moviesFromApi = APImovies.map((movie) => {
           return {
             Title: movie.Title,
+            Description: movie.Description,
+            Genre: movie.Genre, // Why dont I need to say Genre.Name?
+            Director: movie.Director, // Why dont I need to say Director.Name?
+            ImageURL:
+              "https://www.imdb.com/title/tt0410297/mediaviewer/rm1494846464/?ref_=ttmi_mi_all_6",
           };
         });
 
