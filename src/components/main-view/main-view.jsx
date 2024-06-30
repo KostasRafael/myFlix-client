@@ -8,8 +8,10 @@ import { MovieView } from "../movie-view/movie-view";
 
 import { LoginView } from "../login-view/login-view";
 
-const MainView = () => {
+export const MainView = () => {
   const [movies, setMovies] = useState([]);
+  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     fetch("https://murmuring-ridge-94608-7a62e12e52db.herokuapp.com/movies")
@@ -30,7 +32,9 @@ const MainView = () => {
       });
   }, []);
 
-  const [selectedMovie, setSelectedMovie] = useState(null);
+  if (!user) {
+    return <LoginView />;
+  }
 
   if (selectedMovie) {
     return (
