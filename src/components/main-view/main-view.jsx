@@ -1,4 +1,9 @@
-//import useState
+// The Main-View component returns many diferent things depending on the different states of the dynamic constants.
+
+// Dynamic constants  movies, selectedMovie, user
+
+// conditions
+// !user    = (!user) is true when constant user is false. (!user) is false when constant user is true.
 
 import { useState, useEffect } from "react";
 
@@ -8,49 +13,106 @@ import { MovieView } from "../movie-view/movie-view";
 
 import { LoginView } from "../login-view/login-view";
 
+import { SignupView } from "../signup-view/signup-view";
+
 export const MainView = () => {
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const storedToken = localStorage.getItem("token");
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null); // user is set to null because null is treated as falsy for boolean operations
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
-    fetch("https://murmuring-ridge-94608-7a62e12e52db.herokuapp.com/movies")
+    if (!token) {
+      return;
+    }
+
+    fetch("https://murmuring-ridge-94608-7a62e12e52db.herokuapp.com/movies", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
       .then((response) => response.json())
-      .then((APImovies) => {
-        const moviesFromApi = APImovies.map((movie) => {
+      .then((movies) => {
+        const moviesFromApi = movies.map((movie) => {
           return {
             Title: movie.Title,
             Description: movie.Description,
             Genre: movie.Genre, // Why dont I need to say Genre.Name?
             Director: movie.Director, // Why dont I need to say Director.Name?
-            ImageURL:
-              "https://www.imdb.com/title/tt0410297/mediaviewer/rm1494846464/?ref_=ttmi_mi_all_6",
+            ImagePath:
+              "m.media-amazon.com/images/M/MV5BMTgyNDc4MjQ3OV5BMl5BanBnXkFtZTcwMjIxMTIzMw@@.V1_FMjpg_UY2048.jpg",
           };
         });
-
         setMovies(moviesFromApi);
       });
-  }, []);
+  }, [token]);
+
+  //Here, useEffect() has 2 arguments, a function and an array, the token array at the end.
 
   if (!user) {
-    return <LoginView />;
+    return (
+      <>
+        <LoginView
+          onLoggedIn={(user, token) => {
+            setUser(user);
+            setToken(token);
+          }}
+        />
+        or
+        <SignupView />
+      </>
+    );
   }
 
   if (selectedMovie) {
+    // if a movie is selected, then return the Movie-View and for movie use the selectedMovie.
     return (
-      <MovieView
-        movie={selectedMovie}
-        onBackClick={() => setSelectedMovie(null)}
-      />
+      <>
+        <button
+          onClick={() => {
+            setUser(null);
+            setToken(null);
+            localStorage.clear();
+          }}
+        >
+          Logout
+        </button>
+        <MovieView
+          movie={selectedMovie}
+          onBackClick={() => setSelectedMovie(null)}
+        />
+      </>
     );
   }
 
   if (movies.length === 0) {
-    return <div>The list is empty!</div>;
+    return (
+      <>
+        <button
+          onClick={() => {
+            setUser(null);
+            setToken(null);
+            localStorage.clear();
+          }}
+        >
+          Logout
+        </button>
+        <div>The list is empty!</div>
+      </>
+    );
   }
 
   return (
     <div>
+      <button
+        onClick={() => {
+          setUser(null);
+          setToken(null);
+          localStorage.clear();
+        }}
+      >
+        Logout
+      </button>
       {movies.map((movie) => (
         <MovieCard
           key={movie.id}
