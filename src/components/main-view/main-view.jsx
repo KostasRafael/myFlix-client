@@ -39,8 +39,7 @@ export const MainView = () => {
             Description: movie.Description,
             Genre: movie.Genre, // Why dont I need to say Genre.Name?
             Director: movie.Director, // Why dont I need to say Director.Name?
-            ImagePath:
-              "m.media-amazon.com/images/M/MV5BMTgyNDc4MjQ3OV5BMl5BanBnXkFtZTcwMjIxMTIzMw@@.V1_FMjpg_UY2048.jpg",
+            Image: movies.ImagePath,
           };
         });
         setMovies(moviesFromApi);
