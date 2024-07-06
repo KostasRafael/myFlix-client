@@ -37,17 +37,14 @@ export const MainView = () => {
           return {
             Title: movie.Title,
             Description: movie.Description,
-            Genre: movie.Genre, // Why dont I need to say Genre.Name?
-            Director: movie.Director, // Why dont I need to say Director.Name?
-            ImagePath:
-              "m.media-amazon.com/images/M/MV5BMTgyNDc4MjQ3OV5BMl5BanBnXkFtZTcwMjIxMTIzMw@@.V1_FMjpg_UY2048.jpg",
+            Genre: movie.Genre,
+            Director: movie.Director,
+            ImagePath: movie.ImagePath,
           };
         });
         setMovies(moviesFromApi);
       });
   }, [token]);
-
-  //Here, useEffect() has 2 arguments, a function and an array, the token array at the end.
 
   if (!user) {
     return (
@@ -65,7 +62,6 @@ export const MainView = () => {
   }
 
   if (selectedMovie) {
-    // if a movie is selected, then return the Movie-View and for movie use the selectedMovie.
     return (
       <>
         <button
