@@ -4,16 +4,15 @@ import { Button, Card } from "react-bootstrap";
 
 export const MovieCard = ({ movie, onMovieClick }) => {
   return (
-    <card ClassName="h-100">
-      <Card.Img variant="top" src={movie.ImagePath} />
+    <Card ClassName="h-100">
+      <Card.Img variant="top" src={movie.ImagePath} width="200" height="300" />
       <Card.Body>
         <Card.Title>{movie.Title}</Card.Title>
-        <Card.Text>{movie.Director}</Card.Text>
         <Button onClick={() => onMovieClick(movie)} variant="link">
           Open
         </Button>
       </Card.Body>
-    </card>
+    </Card>
   );
 };
 
