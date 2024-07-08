@@ -36,11 +36,8 @@ export const MainView = () => {
             Description: movie.Description,
             Genre: movie.Genre, // Why dont I need to say Genre.Name?
             Director: movie.Director, // Why dont I need to say Director.Name?
-<<<<<<< HEAD
             ImagePath: movie.ImagePath,
-=======
             Image: movies.ImagePath,
->>>>>>> fecbd7bbb9e4dba9b570ec7c82ee08669cbf7932
           };
         });
         setMovies(moviesFromApi);
@@ -79,8 +76,8 @@ export const MainView = () => {
                 key={movie.id}
                 movie={movie}
                 onMovieClick={(newSelectedMovie) => {
-                  setSelectedMovie(newSelectedMovie);  // to navigate between views
-                }} 
+                  setSelectedMovie(newSelectedMovie); // to navigate between views
+                }}
               />
             </Col>
           ))}
