@@ -66,7 +66,7 @@ export const MainView = () => {
         <Col md={8}>
           <MovieView
             movie={selectedMovie}
-            onBackClick={() => setSelectedMovie(null)}
+            onBackClick={() => setSelectedMovie(null)} // to navigate between views
           />
         </Col>
       ) : movies.length === 0 ? (
@@ -79,8 +79,8 @@ export const MainView = () => {
                 key={movie.id}
                 movie={movie}
                 onMovieClick={(newSelectedMovie) => {
-                  setSelectedMovie(newSelectedMovie);
-                }}
+                  setSelectedMovie(newSelectedMovie);  // to navigate between views
+                }} 
               />
             </Col>
           ))}
