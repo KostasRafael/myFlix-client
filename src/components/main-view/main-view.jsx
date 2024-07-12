@@ -8,6 +8,10 @@ import { LoginView } from "../login-view/login-view";
 
 import { SignupView } from "../signup-view/signup-view";
 
+import { NavigationBar } from "../navigation-bar/navigation-bar";
+
+import { UserInfo } from "../profile-view/user-info";
+
 import Row from "react-bootstrap/Row";
 
 import Col from "react-bootstrap/Col";
@@ -34,15 +38,12 @@ export const MainView = () => {
       .then((movies) => {
         const moviesFromApi = movies.map((movie) => {
           return {
+            Id: movie._id,
             Title: movie.Title,
             Description: movie.Description,
             Genre: movie.Genre,
             Director: movie.Director,
             ImagePath: movie.ImagePath,
-            Genre: movie.Genre, // Why dont I need to say Genre.Name?
-            Director: movie.Director, // Why dont I need to say Director.Name?
-            ImagePath: movie.ImagePath,
-            Image: movies.ImagePath,
           };
         });
         setMovies(moviesFromApi);
@@ -51,6 +52,12 @@ export const MainView = () => {
 
   return (
     <BrowserRouter>
+      <NavigationBar
+        user={user}
+        onLoggedOut={() => {
+          setUser(null);
+        }}
+      />
       <Row className="justify-content-md-center">
         <Routes>
           <Route
@@ -113,7 +120,7 @@ export const MainView = () => {
                 ) : (
                   <>
                     {movies.map((movie) => (
-                      <Col className="mb-4" key={movie.id} md={3}>
+                      <Col className="mb-4" key={movie.ID} md={3}>
                         <MovieCard movie={movie} />
                       </Col>
                     ))}

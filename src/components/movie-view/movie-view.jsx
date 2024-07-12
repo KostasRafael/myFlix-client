@@ -1,11 +1,11 @@
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "./movie-view.scss";
 
 export const MovieView = ({ movies }) => {
   const { movieId } = useParams();
 
-  const movie = movies.find((m) => m.id === movieId);
+  const movie = movies.find((m) => m.Id === movieId);
 
   return (
     <div>
@@ -29,9 +29,7 @@ export const MovieView = ({ movies }) => {
         <img src={movie.ImagePath} width="500" height="600" />
       </div>
       <Link to={`/`}>
-        <button onClick={onBackClick} className="back-button">
-          Back
-        </button>
+        <button className="back-button">Back</button>
       </Link>
     </div>
   );
