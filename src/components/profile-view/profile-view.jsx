@@ -24,7 +24,12 @@ return (
       <Col xs={12} sm={8}>
         <Card>
           <Card.Body>
-            <UpdateUser user={user} setUser={setUser} />
+            <UserInfo name={user.Username} email={user.Email} />
+            <FavoriteMovies favoriteMovieList={favoriteMovieList} />
+            <UpdateUser
+              handleSublit={handleSubmit}
+              handleUpdate={handleUpdate}
+            />
           </Card.Body>
         </Card>
       </Col>

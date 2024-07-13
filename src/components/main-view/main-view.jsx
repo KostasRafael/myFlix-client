@@ -10,8 +10,6 @@ import { SignupView } from "../signup-view/signup-view";
 
 import { NavigationBar } from "../navigation-bar/navigation-bar";
 
-import { UserInfo } from "../profile-view/user-info";
-
 import Row from "react-bootstrap/Row";
 
 import Col from "react-bootstrap/Col";
@@ -61,12 +59,12 @@ export const MainView = () => {
       <Row className="justify-content-md-center">
         <Routes>
           <Route
-            path="/signup"
+            path="/signup"     
             element={
               <>
-                {user ? (
+                {user ? (                  // if its a valid user, go to the "/" path, which displays the MovieCard.
                   <Navigate to="/" />
-                ) : (
+                ) : (                      // otherwise, if its not a valid user, display teh SignUp View.
                   <Col md={5}>
                     <SignupView />
                   </Col>
@@ -75,13 +73,13 @@ export const MainView = () => {
             }
           />
           <Route
-            path="/login"
+            path="/login"                      //
             element={
               <>
                 {user ? (
-                  <Navigate to="/" />
-                ) : (
-                  <Col md={5}>
+                  <Navigate to="/" />  // If its a valid user, got go the "/" path which will display the MovieCard.
+                ) : (                  // Otherwise, if its not a valid user, display the LoginView
+                  <Col md={5}>           
                     <LoginView
                       onLoggedIn={(user, token) => {
                         setUser(user);
@@ -97,7 +95,7 @@ export const MainView = () => {
             path="/movies/:movieId"
             element={
               <>
-                {!user ? (
+                {!user ? (                           // if its not a valid user, go to the "/login" path, which will display the LoginView.
                   <Navigate to="/login" replace />
                 ) : movies.length === 0 ? (
                   <Col>The list is empty!</Col>
@@ -109,18 +107,36 @@ export const MainView = () => {
               </>
             }
           />
+
+         <Route
+           path="profile"
+            element={
+              <>
+                {!user ? (                             // if not a valid user, go to the path "/login", which  will display the LoginView.
+                  <Navigate to="/login" replace />
+                ) : (                                  // otherwise, if it is a valid user,
+                    <>
+                    <Col  className="mb-4">
+                      <UserInfo name = {user.Username} email={user.Email} />
+                      <UpdateUser user={user} setUser={ setUser } />
+                      <FavoriteMovies favoriteMovieList={favoriteMovieList} />
+                    </Col>
+                    </>
+                </>
+                )
+      
           <Route
             path="/"
             element={
               <>
-                {!user ? (
+                {!user ? (                             // if not a valid user, go to the path "/login", which  will display the LoginView.
                   <Navigate to="/login" replace />
                 ) : movies.length === 0 ? (
                   <Col>The list is empty!</Col>
                 ) : (
                   <>
                     {movies.map((movie) => (
-                      <Col className="mb-4" key={movie.ID} md={3}>
+                      <Col className="mb-4" key={movie.Id} md={3}>
                         <MovieCard movie={movie} />
                       </Col>
                     ))}
