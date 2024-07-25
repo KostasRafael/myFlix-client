@@ -8,9 +8,9 @@ import { LoginView } from "../login-view/login-view";
 
 import { SignupView } from "../signup-view/signup-view";
 
-import { ProfileView } from "../profile-view/profile-view";
-
 import { NavigationBar } from "../navigation-bar/navigation-bar";
+
+import { ProfileView } from "../profile-view/profile-view";
 
 import Row from "react-bootstrap/Row";
 
@@ -23,13 +23,12 @@ export const MainView = () => {
   const storedToken = localStorage.getItem("token");
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
-  const [user, setUser] = useState(null); // user is set to null because null is treated as falsy for boolean operations
-  const [token, setToken] = useState(null);
+  const [user, setUser] = useState(storedUser ? storedUser : null);
+  const [token, setToken] = useState(storedToken ? storedToken : null);
 
   useEffect(() => {
-    if (!token) {
-      return;
-    }
+    if (!token) return; // useEffect skips the fetching process if there is no token, if token = null.
+    // the first time the component MainView is executed, the fetching does not occur.
 
     fetch("https://murmuring-ridge-94608-7a62e12e52db.herokuapp.com/movies", {
       headers: { Authorization: `Bearer ${token}` },
@@ -51,23 +50,29 @@ export const MainView = () => {
   }, [token]);
 
   return (
+    /*
+     When saying first execution it is meant the first time the MainView components is executed. That is, when the MainView component is returned by
+       the MyFlixApplication component within the indexed.js file.
+        */
     <BrowserRouter>
       <NavigationBar
-        user={user}
+        user={user} //  In the first execution user = null.
         onLoggedOut={() => {
           setUser(null);
+          setToken(null);
+          localStorage.clear();
         }}
       />
       <Row className="justify-content-md-center">
         <Routes>
           <Route
-            path="/signup"
+            path="/signup" // at this path show the SignupView
             element={
               <>
-                {user ? ( // if its a valid user, go to the "/" path, which displays the MovieCard.
+                {user ? ( // Not true in the first execution as user = null
                   <Navigate to="/" />
                 ) : (
-                  // otherwise, if its not a valid user, display teh SignUp View.
+                  // otherwise, if its not a valid user, display teh Signup View.
                   <Col md={5}>
                     <SignupView />
                   </Col>
@@ -76,13 +81,13 @@ export const MainView = () => {
             }
           />
           <Route
-            path="/login" //
+            path="/login" // at this path show the LoginView
             element={
               <>
-                {user ? (
-                  <Navigate to="/" /> // If its a valid user, got go the "/" path which will display the MovieCard.
+                {user ? ( // Not true in the first execution as user = null.
+                  <Navigate to="/" />
                 ) : (
-                  // Otherwise, if its not a valid user, display the LoginView
+                  // true in the first execution as user = null.
                   <Col md={5}>
                     <LoginView
                       onLoggedIn={(user, token) => {
@@ -96,12 +101,12 @@ export const MainView = () => {
             }
           />
           <Route
-            path="/movies/:movieId"
+            path="/movies/:movieId" // at this path show the MovieView of the movie with movieId
             element={
               <>
-                {!user ? ( // if its not a valid user, go to the "/login" path, which will display the LoginView.
+                {!user ? ( // true in the first execution as user = null.
                   <Navigate to="/login" replace />
-                ) : movies.length === 0 ? (
+                ) : movies.length === 0 ? ( // false in the first execution as user = null. Not reached or executed in the first execution.
                   <Col>The list is empty!</Col>
                 ) : (
                   <Col md={8}>
@@ -111,34 +116,31 @@ export const MainView = () => {
               </>
             }
           />
-
           <Route
             path="profile"
             element={
               <>
-                {!user ? (
+                {!user ? ( // true in the first execution as user = null.
                   <Navigate to="/login" replace />
                 ) : (
+                  // false in the first execution as user = null. Not reached or executed in the first execution.
                   <>
                     <Col className="mb-4">
-                      <ProfileView
-                        movies={movies}
-                        onUpdatedUserInfo={onUpdatedUserInfo}
-                      />
+                      <ProfileView movies={movies} />
                     </Col>
                   </>
                 )}
               </>
             }
           />
-
+          ;
           <Route
-            path="/"
+            path="/" //At this path show the MovieCard
             element={
               <>
-                {!user ? ( // if not a valid user, go to the path "/login", which  will display the LoginView.
+                {!user ? ( // true in the first execution as user = null.
                   <Navigate to="/login" replace />
-                ) : movies.length === 0 ? (
+                ) : movies.length === 0 ? ( //  false in the first execution as user = null. Not reached or executed in the first execution.
                   <Col>The list is empty!</Col>
                 ) : (
                   <>

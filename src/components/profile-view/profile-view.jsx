@@ -1,35 +1,50 @@
-import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { FavoriteMovies } from "./favorite-movies";
 import UserInfo from "./user-info";
-import FavoriteMovies from "./favorite-movies";
 import UpdateUser from "./update-user";
-import "./profile-view.scss";
+import { useState, useEffect } from "react";
 
-export function ProfileView({ movies, onUpdatedUserInfo }) {
+export const ProfileView = ({ movies }) => {
   const localUser = JSON.parse(localStorage.getItem("user"));
+  const emailOfUser = localUser.Email;
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [usersFavoriteMovies, setUsersFavoriteMovies] = useState([]);
 
-  const favoriteMovieList = movies.filter((movie) => {
-    return localUser.FavoriteMovies.includes(movie._id);
+  useEffect(() => {
+    fetch(
+      `https://murmuring-ridge-94608-7a62e12e52db.herokuapp.com/users/${localUser.Username}`,
+      {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    )
+      .then((response) => response.json())
+      .then((user) => {
+        if (user.FavoriteMovies.length > 0) {
+          setUsersFavoriteMovies(user.FavoriteMovies);
+        }
+      });
+  }, []);
+
+  const commonMovies = movies.filter((movie) => {
+    return usersFavoriteMovies.includes(movie.Id);
   });
 
-  // each user in the database has a favoriteMovies attributes that stores an array of
-  // their favorite movies.
-
-  // I dont need to fetch all the users, like I did with all the movies.
-  // This is because, my app starts with showing the LoginView. Then,
-  // only once a user is looged in, the favoriteMovies are relevant. And, when
-  // a user is logged in, I also have the details of that specific user.
-
-  const getUser = () => {};
-
-  const removeFav = (id) => {};
-
-  const handleUpdate = (e) => {};
-
-  const handleSubmit = (event) => {
-    event.preventDegault();
-  };
+  function handleUserDelete() {
+    const deleteUrl = `https://murmuring-ridge-94608-7a62e12e52db.herokuapp.com/users/${localUser.Username}`;
+    fetch(deleteUrl, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    }).then((response) => {
+      if (response.ok) {
+        alert("user deleted");
+        localStorage.clear();
+        window.location.reload();
+      } else {
+        alert("deletion failed");
+      }
+    });
+  }
 
   return (
     <Container>
@@ -37,7 +52,11 @@ export function ProfileView({ movies, onUpdatedUserInfo }) {
         <Col xs={12} sm={4}>
           <Card>
             <Card.Body>
-              <UserInfo name={user.Username} email={user.Email} />
+              <UserInfo
+                nameOfUser={localUser.Username}
+                emailOfUser={emailOfUser}
+                handleUserDelete={handleUserDelete}
+              />
             </Card.Body>
           </Card>
         </Col>
@@ -45,17 +64,13 @@ export function ProfileView({ movies, onUpdatedUserInfo }) {
         <Col xs={12} sm={8}>
           <Card>
             <Card.Body>
-              <UserInfo name={user.Username} email={user.Email} />
-              <FavoriteMovies favoriteMovieList={favoriteMovieList} />
-              <UpdateUser
-                handleSublit={handleSubmit}
-                handleUpdate={handleUpdate}
-              />
+              <UpdateUser />
             </Card.Body>
           </Card>
         </Col>
       </Row>
-      <FavoriteMovies favoriteMovieList={favoriteMovieList} />
+
+      <FavoriteMovies commonMovies={commonMovies} />
     </Container>
   );
-}
+};
