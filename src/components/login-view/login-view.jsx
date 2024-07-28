@@ -8,10 +8,13 @@ import {
   Col,
   Row,
 } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../redux/reducers/user";
 
-export const LoginView = ({ onLoggedIn }) => {
+export const LoginView = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
 
   const handleSubmit = (event) => {
     // this prevents the default behavior of the form which is to reload the entire page
@@ -28,17 +31,21 @@ export const LoginView = ({ onLoggedIn }) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Login response: ", data);
+    }).then((response) => {
+      if (response.ok) {
+        response.json().then((data) => {
+          dispatch(setUser(username));
+        });
+      } else {
+        alert("login failed");
+      }
+    });
+  };
+  /* console.log("Login response: ", data);
         if (data.user) {
           localStorage.setItem("user", JSON.stringify(data.user));
           localStorage.setItem("token", data.token);
-          onLoggedIn(data.user, data.token); /* onLoggedIn={(user, token) => {
-                                                     setUser(user);
-                                                    setToken(token);
-                                                  }}*/
+          onLoggedIn(data.user, data.token); 
         } else {
           alert("No such user");
         }
@@ -47,6 +54,7 @@ export const LoginView = ({ onLoggedIn }) => {
         alert("Something went wrong");
       });
   };
+  */
 
   return (
     <Container>
