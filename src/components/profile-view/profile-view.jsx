@@ -8,7 +8,7 @@ export const ProfileView = ({ movies }) => {
   const localUser = JSON.parse(localStorage.getItem("user"));
   const emailOfUser = localUser.Email;
   const [token, setToken] = useState(localStorage.getItem("token"));
-  const [usersFavoriteMovies, setUsersFavoriteMovies] = useState([]);
+  const [favoriteMovies, setFavoriteMovies] = useState([]);
 
   useEffect(() => {
     fetch(
@@ -21,13 +21,13 @@ export const ProfileView = ({ movies }) => {
       .then((response) => response.json())
       .then((user) => {
         if (user.FavoriteMovies.length > 0) {
-          setUsersFavoriteMovies(user.FavoriteMovies);
+          setFavoriteMovies(user.FavoriteMovies);
         }
       });
   }, []);
 
   const commonMovies = movies.filter((movie) => {
-    return usersFavoriteMovies.includes(movie.Id);
+    return favoriteMovies.includes(movie.Id);
   });
 
   function handleUserDelete() {
