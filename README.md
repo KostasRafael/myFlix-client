@@ -21,8 +21,8 @@ Users can also visite their prifile page on which information such as their user
 <li>React Router</li>
 <li>React Bootstrap</li>
 <li>Bootstrap</li>
-<li>React</li>
+<li>React</li>git 
 </ul>
 
 <h3>Hosting</h3>
-<p>This application is hosted on Netlify at the URL: <a>https://myflixmoviescollection.netlify.app</a></p>
+<p>This application is hosted on Netlify at the URL:</p> <a>https://myflixmoviescollection.netlify.app.</a>
