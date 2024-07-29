@@ -22,6 +22,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { setMovies } from "../../redux/reducers/movies";
 
+import { MoviesList } from "../movies-list/movies-list";
 export const MainView = () => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
   const storedToken = localStorage.getItem("token");
@@ -131,21 +132,7 @@ export const MainView = () => {
           <Route
             path="/" //At this path show the MovieCard
             element={
-              <>
-                {!user ? ( // true in the first execution as user = null.
-                  <Navigate to="/login" replace />
-                ) : movies.length === 0 ? ( //  false in the first execution as user = null. Not reached or executed in the first execution.
-                  <Col>The list is empty!</Col>
-                ) : (
-                  <>
-                    {movies.map((movie) => (
-                      <Col className="mb-4" key={movie.Id} md={3}>
-                        <MovieCard movie={movie} />
-                      </Col>
-                    ))}
-                  </>
-                )}
-              </>
+              <>{!user ? <Navigate to="/login" replace /> : <MoviesList />}</>
             }
           />
         </Routes>

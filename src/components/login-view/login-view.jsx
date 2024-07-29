@@ -31,21 +31,14 @@ export const LoginView = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    }).then((response) => {
-      if (response.ok) {
-        response.json().then((data) => {
-          dispatch(setUser(username));
-        });
-      } else {
-        alert("login failed");
-      }
-    });
-  };
-  /* console.log("Login response: ", data);
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Login response: ", data);
         if (data.user) {
           localStorage.setItem("user", JSON.stringify(data.user));
           localStorage.setItem("token", data.token);
-          onLoggedIn(data.user, data.token); 
+          dispatch(setUser(username));
         } else {
           alert("No such user");
         }
@@ -54,7 +47,6 @@ export const LoginView = () => {
         alert("Something went wrong");
       });
   };
-  */
 
   return (
     <Container>
