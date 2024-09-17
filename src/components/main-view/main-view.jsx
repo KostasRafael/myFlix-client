@@ -24,13 +24,10 @@ import { setMovies } from "../../redux/reducers/movies";
 
 import { MoviesList } from "../movies-list/movies-list";
 export const MainView = () => {
-  const storedUser = JSON.parse(localStorage.getItem("user"));
-  const storedToken = localStorage.getItem("token");
   const movies = useSelector((state) => state.movies.list);
   const user = useSelector((state) => state.user);
-  //const [user, setUser] = useState(storedUser ? storedUser : null);
-  const [token, setToken] = useState(storedToken ? storedToken : null);
   const dispatch = useDispatch();
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     if (!token) return; // useEffect skips the fetching process if there is no token, if token = null.
@@ -72,7 +69,7 @@ export const MainView = () => {
                 {user ? ( // Not true in the first execution as user = null
                   <Navigate to="/" />
                 ) : (
-                  // otherwise, if its not a valid user, display teh Signup View.
+                  // otherwise, if its not a valid user, display the Signup View.
                   <Col md={5}>
                     <SignupView />
                   </Col>

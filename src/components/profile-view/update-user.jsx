@@ -1,24 +1,28 @@
 import React from "react";
 import { Form } from "react-bootstrap";
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setUser } from "../../redux/reducers/user";
 
-function UpdateUser() {
-  const localUser = JSON.parse(localStorage.getItem("user"));
+export const UpdateUser = () => {
+  const user = useSelector((state) => state.user);
+  const localUser = localStorage.getItem("user");
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const dispatch = useDispatch();
 
   function handleSubmit(event) {
     event.preventDefault();
 
     const data = {
       Username: username,
-      Password: password,
       Email: email,
+      Password: password,
     };
 
-    const updateUrl = `https://murmuring-ridge-94608-7a62e12e52db.herokuapp.com/users/${localUser.Username}`;
+    const updateUrl = `https://murmuring-ridge-94608-7a62e12e52db.herokuapp.com/users/${user}`;
 
     fetch(updateUrl, {
       method: "PUT",
@@ -32,9 +36,8 @@ function UpdateUser() {
         alert("User info has been successfully updated");
         response.json().then((updatedUser) => {
           localStorage.setItem("user", JSON.stringify(updatedUser));
-          console.log(updatedUser);
+          dispatch(setUser(updatedUser.Username));
         });
-        window.location.reload();
       } else {
         alert("update failed");
       }
@@ -84,6 +87,4 @@ function UpdateUser() {
       </Form>
     </>
   );
-}
-
-export default UpdateUser;
+};

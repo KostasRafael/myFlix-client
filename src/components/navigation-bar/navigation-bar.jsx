@@ -10,7 +10,7 @@ export const NavigationBar = () => {
     <Navbar bg="light" expand="lg">
       <Container>
         <Navbar.Brand as={Link} to="/">
-          Books App
+          Movies App
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">

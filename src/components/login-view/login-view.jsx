@@ -1,3 +1,4 @@
+import React from "react";
 import React, { useState } from "react";
 import {
   Button,
@@ -12,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { setUser } from "../../redux/reducers/user";
 
 export const LoginView = () => {
+  localStorage.clear();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
@@ -34,7 +36,7 @@ export const LoginView = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Login response: ", data);
+        console.log("data", data);
         if (data.user) {
           localStorage.setItem("user", JSON.stringify(data.user));
           localStorage.setItem("token", data.token);
@@ -43,6 +45,7 @@ export const LoginView = () => {
           alert("No such user");
         }
       })
+
       .catch((e) => {
         alert("Something went wrong");
       });

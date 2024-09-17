@@ -1,37 +1,51 @@
 import { Container, Row, Col, Card } from "react-bootstrap";
 import { FavoriteMovies } from "./favorite-movies";
-import UserInfo from "./user-info";
-import UpdateUser from "./update-user";
+import { useSelector, useDispatch } from "react-redux";
+import { UserInfo } from "./user-info";
+import { UpdateUser } from "./update-user";
 import { useState, useEffect } from "react";
 
 export const ProfileView = ({ movies }) => {
-  const localUser = JSON.parse(localStorage.getItem("user"));
-  const emailOfUser = localUser.Email;
-  const [token, setToken] = useState(localStorage.getItem("token"));
-  const [favoriteMovies, setFavoriteMovies] = useState([]);
+  const user = useSelector((state) => state.user);
+  const token = localStorage.getItem("token");
+  const [fetchedUserFavoriteMovies, setFetchedUserFavoriteMovies] = useState(
+    []
+  );
+  const [userObject, setUserObject] = useState({ FavoriteMovies: [] });
+
+  console.log("userObject", userObject);
 
   useEffect(() => {
     fetch(
-      `https://murmuring-ridge-94608-7a62e12e52db.herokuapp.com/users/${localUser.Username}`,
+      `https://murmuring-ridge-94608-7a62e12e52db.herokuapp.com/users/${user}`,
       {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
       }
     )
       .then((response) => response.json())
-      .then((user) => {
-        if (user.FavoriteMovies.length > 0) {
-          setFavoriteMovies(user.FavoriteMovies);
-        }
+      .then((fetchedUser) => {
+        setUserObject(fetchedUser);
       });
   }, []);
 
-  const commonMovies = movies.filter((movie) => {
-    return favoriteMovies.includes(movie.Id);
+  let userEmail = userObject.Email;
+  let userName = userObject.Username;
+
+  useEffect(() => {
+    if (userObject.FavoriteMovies.length > 0) {
+      setFetchedUserFavoriteMovies(userObject.FavoriteMovies);
+    }
+  }, [userObject]);
+
+  const moviesDisplay = movies.filter((movie) => {
+    return fetchedUserFavoriteMovies.includes(movie.Id);
   });
 
+  console.log("moviesDisplay", moviesDisplay);
+
   function handleUserDelete() {
-    const deleteUrl = `https://murmuring-ridge-94608-7a62e12e52db.herokuapp.com/users/${localUser.Username}`;
+    const deleteUrl = `https://murmuring-ridge-94608-7a62e12e52db.herokuapp.com/users/${user}`;
     fetch(deleteUrl, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
@@ -53,8 +67,8 @@ export const ProfileView = ({ movies }) => {
           <Card>
             <Card.Body>
               <UserInfo
-                nameOfUser={localUser.Username}
-                emailOfUser={emailOfUser}
+                nameOfUser={user}
+                userEmail={userEmail}
                 handleUserDelete={handleUserDelete}
               />
             </Card.Body>
@@ -70,7 +84,10 @@ export const ProfileView = ({ movies }) => {
         </Col>
       </Row>
 
-      <FavoriteMovies commonMovies={commonMovies} />
+      <FavoriteMovies
+        moviesDisplay={moviesDisplay}
+        setUserObject={setUserObject}
+      />
     </Container>
   );
 };

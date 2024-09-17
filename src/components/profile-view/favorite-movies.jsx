@@ -1,13 +1,17 @@
 import React from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Row, Col, Figure, Button, Card } from "react-bootstrap";
 import "./profile-view.scss";
 
-export const FavoriteMovies = ({ commonMovies }) => {
+export const FavoriteMovies = ({ moviesDisplay, setUserObject }) => {
+  const localUserHere = JSON.parse(localStorage.getItem("user"));
+  const [token, setToken] = useState(localStorage.getItem("token"));
+
   const removeFav = function (movieId) {
     const localUser = JSON.parse(localStorage.getItem("user"));
     const token = localStorage.getItem("token");
-    const url = `https://murmuring-ridge-94608-7a62e12e52db.herokuapp.com/users/${localUser.Username}/movies/${movieId}`;
+    const url = `https://murmuring-ridge-94608-7a62e12e52db.herokuapp.com/users/${localUserHere.Username}/movies/${movieId}`;
     fetch(url, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
@@ -16,9 +20,10 @@ export const FavoriteMovies = ({ commonMovies }) => {
         alert("movie deleted");
         response.json().then((json) => {
           localStorage.setItem("user", JSON.stringify(json));
-          console.log(json);
+          let localUser = JSON.parse(localStorage.getItem("user"));
+          console.log("localUser", localUser);
+          setUserObject(localUser);
         });
-        window.location.reload();
       } else {
         alert("deletion failed");
       }
@@ -34,7 +39,7 @@ export const FavoriteMovies = ({ commonMovies }) => {
           </Col>
         </Row>
         <Row>
-          {commonMovies.map(({ ImagePath, Title, Id }) => {
+          {moviesDisplay.map(({ ImagePath, Title, Id }) => {
             return (
               <Col xs={12} md={6} lg={3} key={Id} className="fav-movie">
                 <Figure>

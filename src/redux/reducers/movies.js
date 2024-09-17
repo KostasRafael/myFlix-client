@@ -7,6 +7,7 @@ const moviesSlice = createSlice({
     filter: "",
   },
   reducers: {
+    // reducer functions are functions, which take some input, and then transform that input and give a new output, a new result.
     setMovies: (state, action) => {
       state.list = action.payload;
     },

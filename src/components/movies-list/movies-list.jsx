@@ -11,7 +11,6 @@ export const MoviesList = () => {
     .trim()
     .toLowerCase();
 
-  console.log(filter);
   const filteredMovies = movies.filter((movie) =>
     movie.Title.toLowerCase().includes(filter)
   );
