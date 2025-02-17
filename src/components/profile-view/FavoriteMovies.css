@@ -1,0 +1,30 @@
+/* Styles for favorite movies header */
+/* Styles for favorite movies header */
+/* Styles for favorite movies header */
+/* Styles for favorite movies header */
+.favorite-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px; /* Adjust spacing */
+}
+
+.hearts {
+  display: flex;
+  gap: 5px;
+}
+
+.heart-icon {
+  color: red; /* Change heart color */
+  font-size: 24px; /* Adjust heart size */
+}
+
+.title {
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/*--------------------------------------------------------------------*/
+/*--------------------------------------------------------------------*/

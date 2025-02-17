@@ -1,17 +1,20 @@
 import React from "react";
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Row, Col, Figure, Button, Card } from "react-bootstrap";
 import "./profile-view.scss";
+import { useSelector, useDispatch } from "react-redux";
+import { setUser } from "../../redux/reducers/user";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import "./FavoriteMovies.css";
 
-export const FavoriteMovies = ({ moviesDisplay, setUserObject }) => {
-  const localUserHere = JSON.parse(localStorage.getItem("user"));
-  const [token, setToken] = useState(localStorage.getItem("token"));
+export const FavoriteMovies = ({ moviesDisplay }) => {
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const removeFav = function (movieId) {
-    const localUser = JSON.parse(localStorage.getItem("user"));
     const token = localStorage.getItem("token");
-    const url = `https://murmuring-ridge-94608-7a62e12e52db.herokuapp.com/users/${localUserHere.Username}/movies/${movieId}`;
+    const url = `https://murmuring-ridge-94608-7a62e12e52db.herokuapp.com/users/${user.Username}/movies/${movieId}`;
     fetch(url, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
@@ -19,10 +22,7 @@ export const FavoriteMovies = ({ moviesDisplay, setUserObject }) => {
       if (response.ok) {
         alert("movie deleted");
         response.json().then((json) => {
-          localStorage.setItem("user", JSON.stringify(json));
-          let localUser = JSON.parse(localStorage.getItem("user"));
-          console.log("localUser", localUser);
-          setUserObject(localUser);
+          dispatch(setUser(json));
         });
       } else {
         alert("deletion failed");
@@ -30,12 +30,37 @@ export const FavoriteMovies = ({ moviesDisplay, setUserObject }) => {
     });
   };
 
+  const leftHearts = [1, 2, 3, 4, 5];
+  const rightHearts = [1, 2, 3, 4, 5];
+
   return (
-    <Card>
+    <Card style={{ backgroundColor: "black" }}>
       <Card.Body>
         <Row>
           <Col xs={12}>
-            <h4>Favorite Movies</h4>
+            <div className="favorite-header">
+              <div className="hearts">
+                {[...Array(5)].map((_, index) => (
+                  <FontAwesomeIcon
+                    key={index}
+                    icon={faHeart}
+                    className="heart-icon"
+                  />
+                ))}
+              </div>
+
+              <h1 className="title">Favorite Movies</h1>
+
+              <div className="hearts">
+                {[...Array(5)].map((_, index) => (
+                  <FontAwesomeIcon
+                    key={index}
+                    icon={faHeart}
+                    className="heart-icon"
+                  />
+                ))}
+              </div>
+            </div>
           </Col>
         </Row>
         <Row>
@@ -44,13 +69,25 @@ export const FavoriteMovies = ({ moviesDisplay, setUserObject }) => {
               <Col xs={12} md={6} lg={3} key={Id} className="fav-movie">
                 <Figure>
                   <Link to={`/movies/${Id}`}>
-                    <Figure.Image src={ImagePath} alt={Title} />
+                    <Figure.Image
+                      src={ImagePath}
+                      alt={Title}
+                      style={{ maxHeight: "250px", maxWidth: "100%" }}
+                    />
 
-                    <Figure.Caption>{Title}</Figure.Caption>
+                    <Figure.Caption
+                      style={{ color: "white", fontSize: "1.6rem" }}
+                    >
+                      {Title}
+                    </Figure.Caption>
                   </Link>
                 </Figure>
 
-                <Button variant="secondary" onClick={() => removeFav(Id)}>
+                <Button
+                  variant="secondary"
+                  onClick={() => removeFav(Id)}
+                  style={{ backgroundColor: "red", color: "white" }}
+                >
                   Remove
                 </Button>
               </Col>

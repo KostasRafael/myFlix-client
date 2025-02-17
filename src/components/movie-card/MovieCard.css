@@ -1,0 +1,18 @@
+.movie-card-content {
+  height: 200px;
+  overflow: hidden;
+  background-color: black;
+  color: white;
+}
+
+.movie-card {
+  transition: all 0.3s;
+}
+
+.movie-card:hover {
+  transform: Scale(1.15);
+}
+
+.movie-card:hover .card-body {
+  overflow: auto; /* Enable scrolling only when hovered */
+}

@@ -1,0 +1,81 @@
+.navbar {
+  padding: 10px 20px;
+  min-height: 60px; /* Ensures navbar doesn't shrink too much */
+  transition: all 0.3s ease-in-out;
+  overflow: hidden; /* Prevents content from overflowing */
+  flex-wrap: nowrap;
+}
+
+.no-user-navbar {
+  background-color: black;
+  pointer-events: "none";
+}
+
+.transparent-navbar a {
+  pointer-events: auto; /* Keeps Navbar links clickable */
+}
+
+.brand {
+  color: red;
+  font-weight: 900;
+  font-size: 4rem;
+  margin-top: -38px;
+  transition: font-size 0.3s ease; /* Smooth shrinking effect */
+}
+
+.nav-links {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.nav-button {
+  background-color: red;
+  color: white;
+  font-weight: bold;
+  font-size: 1.5rem;
+  padding: 5px 10px;
+  border-radius: 10px;
+  transition: all 0.3s ease; /* Smooth transitions */
+}
+
+.nav-button:hover {
+  background-color: darkred;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+  /* Tablets & small desktops */
+  .brand {
+    font-size: 2.5rem; /* Shrinks brand */
+  }
+  .nav-button {
+    font-size: 1.3rem;
+    padding: 4px 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Small screens */
+  .brand {
+    font-size: 2rem; /* Shrinks brand further */
+  }
+  .nav-links {
+    gap: 8px;
+  }
+  .nav-button {
+    font-size: 1.1rem;
+    padding: 3px 6px;
+  }
+}
+
+@media (max-width: 576px) {
+  /* Mobile */
+  .brand {
+    font-size: 1.8rem;
+  }
+  .nav-button {
+    font-size: 1rem;
+    padding: 2px 4px;
+  }
+}

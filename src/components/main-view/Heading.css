@@ -1,0 +1,16 @@
+.heading-container {
+  color: white;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10; /* Ensures it's above the images */
+  background: rgba(0, 0, 0, 0.6); /* Slight transparency */
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}

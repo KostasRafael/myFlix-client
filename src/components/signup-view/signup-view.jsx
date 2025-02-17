@@ -1,3 +1,6 @@
+import { moviesImages } from "../../../movies-images";
+import "bootstrap/dist/css/bootstrap.min.css";
+
 import { useState } from "react";
 import {
   Button,
@@ -8,6 +11,7 @@ import {
   Col,
   Row,
 } from "react-bootstrap";
+import "./SignupView.css";
 
 export const SignupView = () => {
   const [username, setUsername] = useState("");
@@ -42,62 +46,104 @@ export const SignupView = () => {
   };
 
   return (
-    <Container>
-      <Row>
-        <Col>
-          <CardGroup>
-            <Card>
-              <Form onSubmit={handleSubmit}>
-                <Form.Group controlId="formUsername">
-                  <Form.Label>Username:</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                    minLength="3"
-                    placeholder="Enter a username"
-                  />
-                </Form.Group>
+    <Container fluid id="container" className="p-0 m-0">
+      <Container
+        fluid
+        id="card-group"
+        style={{
+          position: "fixed",
+          top: "0",
+          left: "0",
+          width: "100vw",
+          height: "100vh",
+          background: "rgba(0, 0, 0, 0.6)",
+          display: "flex",
+          flex: "none",
+          justifyContent: "center",
+          alignItems: "center",
+          zIndex: "10",
+          pointerEvents: "none !important",
+        }}
+      >
+        <Card
+          id="card"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "500px",
+            heigh: "400px",
+          }}
+        >
+          <Form
+            onSubmit={handleSubmit}
+            style={{ margin: "2px", width: "400px" }}
+          >
+            <Form.Group controlId="formUsername">
+              <Form.Label style={{ color: "white" }}>Username:</Form.Label>
+              <Form.Control
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+                minLength="3"
+                placeholder="Enter a username"
+              />
+            </Form.Group>
 
-                <Form.Group controlId="formPassword">
-                  <Form.Label>Password:</Form.Label>
-                  <Form.Control
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    placeholder="Enter a password"
-                  />
-                </Form.Group>
+            <Form.Group controlId="formPassword">
+              <Form.Label style={{ color: "white" }}>Password:</Form.Label>
+              <Form.Control
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                placeholder="Enter a password"
+              />
+            </Form.Group>
 
-                <Form.Group controlId="formPassword">
-                  <Form.Label>Email:</Form.Label>
-                  <Form.Control
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </Form.Group>
+            <Form.Group controlId="formPassword">
+              <Form.Label style={{ color: "white" }}>Email:</Form.Label>
+              <Form.Control
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </Form.Group>
 
-                <Form.Group controlId="formPassword">
-                  <Form.Label>Birthday:</Form.Label>
-                  <Form.Control
-                    type="date"
-                    value={birthday}
-                    onChange={(e) => setBirthday(e.target.value)}
-                    required
-                  />
-                </Form.Group>
+            <Form.Group controlId="formPassword">
+              <Form.Label style={{ color: "white" }}>Birthday:</Form.Label>
+              <Form.Control
+                type="date"
+                value={birthday}
+                onChange={(e) => setBirthday(e.target.value)}
+                required
+              />
+            </Form.Group>
 
-                <Button variant="primary" type="submit">
-                  Sign up
-                </Button>
-              </Form>
-            </Card>
-          </CardGroup>
-        </Col>
+            <Button variant="primary" size="lg" type="submit">
+              Sign up
+            </Button>
+          </Form>
+        </Card>
+      </Container>
+
+      <Row className="g-0">
+        {moviesImages.map((movieItem, index) => (
+          <Col key={index} xs={6} sm={4} md={3} lg={2}>
+            <img
+              src={movieItem}
+              alt={`Movie ${index}`}
+              className="img-fluid"
+              style={{
+                width: "100%",
+                height: "250px",
+                objectFit: "cover",
+              }}
+            />
+          </Col>
+        ))}
       </Row>
     </Container>
   );

@@ -4,42 +4,24 @@ import { useSelector, useDispatch } from "react-redux";
 import { UserInfo } from "./user-info";
 import { UpdateUser } from "./update-user";
 import { useState, useEffect } from "react";
+import "./ProfileView.css";
+import { setUser } from "../../redux/reducers/user";
 
 export const ProfileView = ({ movies }) => {
   const user = useSelector((state) => state.user);
+  const userFavoriteMovies = user.FavoriteMovies;
   const token = localStorage.getItem("token");
-  const [fetchedUserFavoriteMovies, setFetchedUserFavoriteMovies] = useState(
-    []
-  );
-  const [userObject, setUserObject] = useState({ FavoriteMovies: [] });
+  const dispatch = useDispatch();
+  // const [fetchedUserFavoriteMovies, setFetchedUserFavoriteMovies] = useState(
+  //   []
+  // );
+  // const [userObject, setUserObject] = useState({ FavoriteMovies: [] });
 
-  console.log("userObject", userObject);
-
-  useEffect(() => {
-    fetch(
-      `https://murmuring-ridge-94608-7a62e12e52db.herokuapp.com/users/${user}`,
-      {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    )
-      .then((response) => response.json())
-      .then((fetchedUser) => {
-        setUserObject(fetchedUser);
-      });
-  }, []);
-
-  let userEmail = userObject.Email;
-  let userName = userObject.Username;
-
-  useEffect(() => {
-    if (userObject.FavoriteMovies.length > 0) {
-      setFetchedUserFavoriteMovies(userObject.FavoriteMovies);
-    }
-  }, [userObject]);
+  // console.log("user at 1st render", user);
+  // console.log("userObject at 1st render", userObject);
 
   const moviesDisplay = movies.filter((movie) => {
-    return fetchedUserFavoriteMovies.includes(movie.Id);
+    return userFavoriteMovies.includes(movie.Id);
   });
 
   console.log("moviesDisplay", moviesDisplay);
@@ -53,7 +35,8 @@ export const ProfileView = ({ movies }) => {
       if (response.ok) {
         alert("user deleted");
         localStorage.clear();
-        window.location.reload();
+        dispatch(setUser(null));
+        // window.location.reload();
       } else {
         alert("deletion failed");
       }
@@ -61,22 +44,26 @@ export const ProfileView = ({ movies }) => {
   }
 
   return (
-    <Container>
+    <Container
+      className="p-0 m-0"
+      fluid
+      style={{ border: "5px solid red", backgroundColor: "black" }}
+    >
       <Row>
-        <Col xs={12} sm={4}>
-          <Card>
+        <Col style={{ border: "5px solid blue" }} xs={12} sm={4}>
+          <Card className="info-card">
             <Card.Body>
               <UserInfo
-                nameOfUser={user}
-                userEmail={userEmail}
+                nameOfUser={user.Username}
+                userEmail={user.Email}
                 handleUserDelete={handleUserDelete}
               />
             </Card.Body>
           </Card>
         </Col>
 
-        <Col xs={12} sm={8}>
-          <Card>
+        <Col style={{ border: "5px solid green" }} xs={12} sm={8}>
+          <Card className="update-card">
             <Card.Body>
               <UpdateUser />
             </Card.Body>
@@ -84,10 +71,7 @@ export const ProfileView = ({ movies }) => {
         </Col>
       </Row>
 
-      <FavoriteMovies
-        moviesDisplay={moviesDisplay}
-        setUserObject={setUserObject}
-      />
+      <FavoriteMovies moviesDisplay={moviesDisplay} />
     </Container>
   );
 };

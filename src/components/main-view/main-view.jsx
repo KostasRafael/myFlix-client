@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import { MovieCard } from "../movie-card/movie-card";
 
@@ -8,9 +9,13 @@ import { LoginView } from "../login-view/login-view";
 
 import { SignupView } from "../signup-view/signup-view";
 
+import { WelcomeView } from "../welcome-view/WelcomeView";
+
 import { NavigationBar } from "../navigation-bar/navigation-bar";
 
 import { ProfileView } from "../profile-view/profile-view";
+
+import Heading from "./Heading";
 
 import Row from "react-bootstrap/Row";
 
@@ -23,6 +28,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { setMovies } from "../../redux/reducers/movies";
 
 import { MoviesList } from "../movies-list/movies-list";
+import { Container } from "react-bootstrap";
+
 export const MainView = () => {
   const movies = useSelector((state) => state.movies.list);
   const user = useSelector((state) => state.user);
@@ -58,82 +65,111 @@ export const MainView = () => {
        the MyFlixApplication component within the indexed.js file.
         */
     <BrowserRouter>
-      <NavigationBar />
+      <Container
+        fluid
+        className="p-0 m-0"
+        style={{
+          height: "100vh",
+        }}
+      >
+        <NavigationBar />
 
-      <Row className="justify-content-md-center">
-        <Routes>
-          <Route
-            path="/signup" // at this path show the SignupView
-            element={
-              <>
-                {user ? ( // Not true in the first execution as user = null
-                  <Navigate to="/" />
-                ) : (
-                  // otherwise, if its not a valid user, display the Signup View.
-                  <Col md={5}>
-                    <SignupView />
-                  </Col>
-                )}
-              </>
-            }
-          />
-          <Route
-            path="/login" // at this path show the LoginView
-            element={
-              <>
-                {user ? ( // Not true in the first execution as user = null.
-                  <Navigate to="/" />
-                ) : (
-                  // true in the first execution as user = null.
-                  <Col md={5}>
-                    <LoginView />
-                  </Col>
-                )}
-              </>
-            }
-          />
-          <Route
-            path="/movies/:movieId" // at this path show the MovieView of the movie with movieId
-            element={
-              <>
-                {!user ? ( // true in the first execution as user = null.
-                  <Navigate to="/login" replace />
-                ) : movies.length === 0 ? ( // false in the first execution as user = null. Not reached or executed in the first execution.
-                  <Col>The list is empty!</Col>
-                ) : (
-                  <Col md={8}>
-                    <MovieView />
-                  </Col>
-                )}
-              </>
-            }
-          />
-          <Route
-            path="profile"
-            element={
-              <>
-                {!user ? ( // true in the first execution as user = null.
-                  <Navigate to="/login" replace />
-                ) : (
-                  // false in the first execution as user = null. Not reached or executed in the first execution.
-                  <>
-                    <Col className="mb-4">
-                      <ProfileView movies={movies} />
+        <Row className={user ? "mt-5" : ""}>
+          {" "}
+          {/* The className="justify-content-md-center" applies Bootstrap's flex utility class, which controls horizontal alignment.*/}
+          <Routes>
+            <Route
+              path="/signup" // at this path show the SignupView
+              element={
+                <>
+                  {user ? ( // Not true in the first execution as user = null
+                    <Navigate to="/" />
+                  ) : (
+                    // otherwise, if its not a valid user, display the Signup View.
+                    <Col className="p-0 m-0">
+                      <SignupView />
                     </Col>
-                  </>
-                )}
-              </>
-            }
-          />
-          ;
-          <Route
-            path="/" //At this path show the MovieCard
-            element={
-              <>{!user ? <Navigate to="/login" replace /> : <MoviesList />}</>
-            }
-          />
-        </Routes>
-      </Row>
+                  )}
+                </>
+              }
+            />
+            <Route
+              path="/login" // at this path show the LoginView
+              element={
+                <>
+                  {user ? ( // Not true in the first execution as user = null.
+                    <Navigate to="/" />
+                  ) : (
+                    // true in the first execution as user = null.
+                    <Col className="p-0 m-0">
+                      <LoginView />
+                    </Col>
+                  )}
+                </>
+              }
+            />
+            <Route
+              path="/movies/:movieId" // at this path show the MovieView of the movie with movieId
+              element={
+                <>
+                  {!user ? ( // true in the first execution as user = null.
+                    <Navigate to="/login" replace />
+                  ) : movies.length === 0 ? ( // false in the first execution as user = null. Not reached or executed in the first execution.
+                    <Col>The list is empty!</Col>
+                  ) : (
+                    <Col md={8}>
+                      <MovieView />
+                    </Col>
+                  )}
+                </>
+              }
+            />
+            <Route
+              path="profile"
+              element={
+                <>
+                  {!user ? ( // true in the first execution as user = null.
+                    <Navigate to="/login" replace />
+                  ) : (
+                    // false in the first execution as user = null. Not reached or executed in the first execution.
+                    <>
+                      <Col className="p-0 m-0">
+                        <ProfileView movies={movies} />
+                      </Col>
+                    </>
+                  )}
+                </>
+              }
+            />
+            ;
+            <Route
+              path="/" //At this path show the MovieCard
+              element={
+                <>
+                  {!user ? (
+                    <Navigate to="/login" replace />
+                  ) : (
+                    // false in the first execution as user = null. Not reached or executed in the first execution.
+                    <>
+                      <Col
+                        size
+                        style={{
+                          border: "5px solid green",
+                          backgroundColor: "black",
+                        }}
+                        className="p-0 m-0"
+                      >
+                        <MoviesList movies={movies} />
+                      </Col>
+                    </>
+                  )}
+                </>
+              }
+            />
+            ;
+          </Routes>
+        </Row>
+      </Container>
     </BrowserRouter>
   );
 };

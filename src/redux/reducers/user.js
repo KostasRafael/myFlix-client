@@ -8,6 +8,8 @@ const userSlice = createSlice({
     // all the reducers this state slice needs
     setUser: (state, action) => action.payload, // reseives the current state and the action by default, by the redux library
     // returns the new state
+    setUesrFavoriteMovies: (state, action) =>
+      (state.userFavoriteMovies = action.payload),
   },
 });
 

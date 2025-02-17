@@ -12,6 +12,7 @@ export const MoviesFilter = () => {
       placeholder="Search..."
       value={filter}
       onChange={(e) => dispatch(setFilter(e.target.value))}
+      style={{ marginTop: "-25px", marginRight: "1rem" }}
     />
   );
 };
